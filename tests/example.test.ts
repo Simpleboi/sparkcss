@@ -1,0 +1,1 @@
+// Example test for full compilation process
