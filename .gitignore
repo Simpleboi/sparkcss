@@ -1,0 +1,66 @@
+# Node modules
+node_modules/
+
+# Distribution folder
+dist/
+
+# Build artifacts
+*.log
+*.tsbuildinfo
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# OS-specific files
+.DS_Store        # macOS
+Thumbs.db        # Windows
+.idea/           # JetBrains IDEs
+.vscode/         # VSCode settings
+*.swp            # Vim swap files
+
+# Temporary files
+*.tmp
+*.temp
+
+# Package-lock file (optional)
+# Uncomment if you do not want to commit lock files
+# package-lock.json
+# yarn.lock
+
+# Coverage output (if using Jest or similar testing tool)
+coverage/
+
+# Compiled files
+*.out
+*.map
+*.d.ts
+
+# TypeScript declaration files (if they are generated)
+*.d.ts
+
+# Generated documentation
+docs/
+
+# GitHub workflows
+.github/
+
+# Debug files (optional)
+debug.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Ignore IDE-specific settings (optional)
+*.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Generated config or cache files
+.cache/
+.parcel-cache/
+
+# SparkCSS specific
+# Any other files or folders unique to SparkCSS
+spark.config.json
