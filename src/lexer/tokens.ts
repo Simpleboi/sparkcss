@@ -1,5 +1,11 @@
 // Token definition
 export enum TokenType {
+  Identifier,
+  Directive,
+  Number, 
+  Unit, 
+  Color, 
+  Operator,
   Selector,
   Property,
   Value,
@@ -9,5 +15,8 @@ export enum TokenType {
   EOF,
 }
 
-
-  
+export interface Token {
+  type: TokenType;
+  value: string;
+  position: number; // Track the position for error reporting
+}

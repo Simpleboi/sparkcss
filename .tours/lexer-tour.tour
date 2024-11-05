@@ -1,0 +1,17 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "Lexer Tour",
+  "steps": [
+    {
+      "file": "src/lexer/lexer.ts",
+      "description": "This starts the lexer function",
+      "line": 8
+    },
+    {
+      "file": "src/lexer/lexer.ts",
+      "description": "While something sometinng",
+      "line": 12
+    }
+  ],
+  "ref": "8857c813cb3706941c7db73d02021e36738d3e75"
+}
