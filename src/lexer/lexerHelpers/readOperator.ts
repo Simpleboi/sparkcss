@@ -1,17 +1,10 @@
 import { TokenType } from "../tokens";
 import { addToken, peek, advance, getPosition } from "./lexerUtils";
-import { readColor } from "./readColor"; // Import readColor if it's used within
 
-export function readSymbolOrOperator() {
+export function readOperator() {
   const char = advance();
 
   switch (char) {
-    case "{":
-    case "}":
-    case ";":
-    case ":":
-      addToken(TokenType.Symbol, char);
-      break;
     case "+":
     case "-":
     case "*":
@@ -25,7 +18,7 @@ export function readSymbolOrOperator() {
         advance();
         addToken(TokenType.Operator, "==");
       } else {
-        addToken(TokenType.Symbol, "=");
+        throw new Error(`Unexpected operator: ${char} at position ${getPosition()}`);
       }
       break;
     case "!":
@@ -40,18 +33,19 @@ export function readSymbolOrOperator() {
       if (peek() === "&") {
         advance();
         addToken(TokenType.Operator, "&&");
+      } else {
+        throw new Error(`Unexpected operator: ${char} at position ${getPosition()}`);
       }
       break;
     case "|":
       if (peek() === "|") {
         advance();
         addToken(TokenType.Operator, "||");
+      } else {
+        throw new Error(`Unexpected operator: ${char} at position ${getPosition()}`);
       }
       break;
-    case "#":
-      readColor();
-      break;
     default:
-      throw new Error(`Unexpected character: ${char} at position ${getPosition()}`);
+      throw new Error(`Unexpected operator: ${char} at position ${getPosition()}`);
   }
 }

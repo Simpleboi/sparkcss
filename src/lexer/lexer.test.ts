@@ -3,7 +3,7 @@ import { lexer } from "./lexer";
 import { TokenType } from "./tokens";
 
 // Sample Input to test the lexer
-const sampleInput = `.example`;
+const sampleInput = `@if $padding > 10px && $bg-color == #3498db { padding: 20px; }`;
 
 const tokens = lexer(sampleInput);
 
