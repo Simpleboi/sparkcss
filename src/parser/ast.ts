@@ -15,13 +15,13 @@ export type ASTNode =
 
 export interface Rule {
   type: "Rule";
-  selectors: string[]; // e.g., [".my-class", "#id"]
+  selectors: string[]; // Like [".my-class", "#id"]
   declarations: Declaration[];
 }
 
 export interface Declaration {
   type: "Declaration";
-  property: string; // e.g., "color", "padding"
+  property: string; // Like "color", "padding"
   value: string; // e.g., "red", "10px"
 }
 

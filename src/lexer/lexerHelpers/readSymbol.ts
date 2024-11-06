@@ -8,6 +8,7 @@ export function readSymbol() {
     case "{":
     case "}":
     case ";":
+    case ",":
     case ":":
       addToken(TokenType.Symbol, char);
       break;
