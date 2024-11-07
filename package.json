@@ -12,10 +12,11 @@
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
-    "build": "rm -rf dist && tsc"
+    "build": "rm -rf dist && tsc",
+    "build:styles": "sparkcss src/styles/input.spark -o dist/styles.css"
   },
   "keywords": [],
-  "author": "",
+  "author": "Nathaniel Paz (n8.jsx)",
   "license": "ISC",
   "description": "A custom css preprocessor",
   "devDependencies": {

@@ -3,7 +3,6 @@ import {
   initializeLexer,
   tokens,
   peek,
-  advance,
   addToken,
   skipWhitespace,
   getPosition,

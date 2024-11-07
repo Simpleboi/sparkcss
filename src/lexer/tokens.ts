@@ -6,17 +6,17 @@ export enum TokenType {
   Unit,           // For units like px, rem, % 
   Operator,       // For operations like +, -, *
   Selector,       // For selectors like .class-name
-  Identifier,     // 
+  Identifier,     // I don't know 
   Color,          // For colors like #fff or #fffeee
   Property,       // For CSS specifc properties
-  Value,
+  Value,          // For CSS specific values
   Symbol,         // For symbols like {} ; :
-  Keyword,
+  Keyword,        // For SparkCSS specifc keywords
   EOF,
 }
 
 export interface Token {
   type: TokenType;
   value: string;
-  position: number; // Track the position for error reporting
+  position: number;
 }

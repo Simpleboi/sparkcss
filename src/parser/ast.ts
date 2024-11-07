@@ -1,46 +1,20 @@
-// Abstract Syntax Tree / node definition
 // ast.ts
 
-export interface Stylesheet {
+export type Stylesheet = {
   type: "Stylesheet";
-  body: ASTNode[];
-}
+  rules: Rule[];
+};
 
-export type ASTNode =
-  | Rule
-  | Declaration
-  | Snippet
-  | SnippetApplication
-  | Directive;
-
-export interface Rule {
+export type Rule = {
   type: "Rule";
-  selectors: string[]; // Like [".my-class", "#id"]
+  selector: string;
   declarations: Declaration[];
-}
+};
 
-export interface Declaration {
+export type Declaration = {
   type: "Declaration";
-  property: string; // Like "color", "padding"
-  value: string; // e.g., "red", "10px"
-}
+  property: string;
+  value: string;
+};
 
-export interface Snippet {
-  type: "Snippet";
-  name: string; // e.g., "buttonStyles"
-  parameters: string[]; // e.g., ["color"]
-  declarations: Declaration[];
-}
-
-export interface SnippetApplication {
-  type: "SnippetApplication";
-  name: string; // e.g., "buttonStyles"
-  arguments: string[]; // e.g., ["#3498db"]
-}
-
-export interface Directive {
-  type: "Directive";
-  name: string; // e.g., "@if", "@responsive"
-  condition?: string; // Condition for `@if` statements
-  body: ASTNode[]; // Nested rules or declarations inside directives
-}
+export type ASTNode = Stylesheet | Rule | Declaration;

@@ -1,137 +1,137 @@
-// parser implementation
-
+// parser.ts
 import { Token, TokenType } from "../lexer/tokens";
-import { Stylesheet, Rule, Declaration, Snippet, Directive, ASTNode } from "./ast";
+import { Stylesheet, Rule, Declaration } from "./ast";
+import { cssPropertyValues } from "../css/cssPropertiesMappings";
+import { cssProperties } from "../css/cssProperties";
 
-export class Parser {
-  private tokens: Token[];
-  private current: number = 0;
+let currentIndex = 0;
+let tokens: Token[] = [];
 
-  constructor(tokens: Token[]) {
-    this.tokens = tokens;
-  }
+export function parse(inputTokens: Token[]): Stylesheet {
+  // Assign the input tokens to the global tokens array
+  tokens = inputTokens;
+  currentIndex = 0;
 
-  parse(): Stylesheet {
-    const body: ASTNode[] = [];
-    while (!this.isAtEnd()) {
-      body.push(this.parseStatement());
+  const stylesheet: Stylesheet = {
+    type: "Stylesheet",
+    rules: [],
+  };
+
+  while (currentIndex < tokens.length) {
+    // Skip any empty tokens
+    skipEmptyTokens();
+
+    if (currentIndex >= tokens.length) {
+      console.log("End of tokens reached.");
+      break; // No more tokens to process
     }
-    return { type: "Stylesheet", body };
-  }
 
-  private parseStatement(): ASTNode {
-    const token = this.peek();
+    const token = current();
+
+    // Debug log to track token processing
+    console.log("Processing token:", token);
 
     if (token.type === TokenType.Selector) {
-      return this.parseRule();
-    } else if (token.type === TokenType.Directive && token.value === "@snippet") {
-      return this.parseSnippet();
-    } else if (token.type === TokenType.Directive) {
-      return this.parseDirective();
+      stylesheet.rules.push(parseRule());
+    } else if (token.type === TokenType.EOF) {
+      break; 
     } else {
       throw new Error(`Unexpected token: ${token.value} at position ${token.position}`);
     }
   }
 
-  private parseRule(): Rule {
-    const selectors: string[] = [];
-    while (this.match(TokenType.Selector)) {
-      selectors.push(this.previous().value);
-    }
+  return stylesheet;
+}
 
-    this.consume(TokenType.Symbol, "{");
+function skipEmptyTokens() {
+  while (currentIndex < tokens.length && current().value === "") {
+    next();
+  }
+}
 
-    const declarations: Declaration[] = [];
-    while (!this.check(TokenType.Symbol, "}")) {
-      declarations.push(this.parseDeclaration());
-    }
+function current(): Token {
+  if (currentIndex >= tokens.length) {
+    throw new Error(`Unexpected end of input at index ${currentIndex}`);
+  }
+  return tokens[currentIndex];
+}
 
-    this.consume(TokenType.Symbol, "}");
+function next(): void {
+  currentIndex++;
+}
 
-    return { type: "Rule", selectors, declarations };
+function parseRule(): Rule {
+  const selectorToken = current();
+  if (selectorToken.type !== TokenType.Selector) {
+    throw new Error(`Expected Selector, but got ${selectorToken.type} at position ${selectorToken.position}`);
   }
 
-  private parseDeclaration(): Declaration {
-    const property = this.consume(TokenType.Property).value;
-    this.consume(TokenType.Symbol, ":");
-    const value = this.consume(TokenType.Value).value;
-    this.consume(TokenType.Symbol, ";");
+  const rule: Rule = {
+    type: "Rule",
+    selector: selectorToken.value,
+    declarations: [],
+  };
+  next();
 
-    return { type: "Declaration", property, value };
+  if (current().type !== TokenType.Symbol || current().value !== "{") {
+    throw new Error(`Expected '{' after selector`);
+  }
+  next(); 
+
+  // Parse all declarations inside the rule
+  while (current().type !== TokenType.Symbol || current().value !== "}") {
+    rule.declarations.push(parseDeclaration());
   }
 
-  private parseSnippet(): Snippet {
-    this.consume(TokenType.Directive, "@snippet");
-    const name = this.consume(TokenType.Identifier).value;
-    const parameters: string[] = [];
+  next();
+  return rule;
+}
 
-    if (this.match(TokenType.Symbol, "(")) {
-      do {
-        parameters.push(this.consume(TokenType.Identifier).value);
-      } while (this.match(TokenType.Symbol, ","));
-      this.consume(TokenType.Symbol, ")");
-    }
+function parseDeclaration(): Declaration {
+  const propertyToken = current();
 
-    this.consume(TokenType.Symbol, "{");
-
-    const declarations: Declaration[] = [];
-    while (!this.check(TokenType.Symbol, "}")) {
-      declarations.push(this.parseDeclaration());
-    }
-
-    this.consume(TokenType.Symbol, "}");
-
-    return { type: "Snippet", name, parameters, declarations };
+  // Validate the property name
+  if (propertyToken.type !== TokenType.Property && propertyToken.type !== TokenType.Identifier) {
+    throw new Error(`Expected Property, but got ${propertyToken.type} at position ${propertyToken.position}`);
   }
 
-  private parseDirective(): Directive {
-    const name = this.advance().value;
-    const condition = this.match(TokenType.Identifier) ? this.previous().value : undefined;
-    this.consume(TokenType.Symbol, "{");
-
-    const body: ASTNode[] = [];
-    while (!this.check(TokenType.Symbol, "}")) {
-      body.push(this.parseStatement());
-    }
-
-    this.consume(TokenType.Symbol, "}");
-
-    return { type: "Directive", name, condition, body };
+  // Check if the property is a valid CSS property
+  const propertyName = propertyToken.value;
+  if (!cssProperties.includes(propertyName)) {
+    throw new Error(`Unknown property '${propertyName}' at position ${propertyToken.position}`);
   }
 
-  private match(type: TokenType, value?: string): boolean {
-    if (this.check(type, value)) {
-      this.advance();
-      return true;
-    }
-    return false;
+  next(); 
+
+  // Expect and validate the colon `:`
+  if (current().type !== TokenType.Symbol || current().value !== ":") {
+    throw new Error(`Expected ':' after property name at position ${current().position}`);
+  }
+  next(); // Move past `:`
+
+  // Parse the value
+  const valueToken = current();
+  const validValues = cssPropertyValues[propertyName] || []; // Get valid values for the property
+
+  if (
+    !validValues.includes(valueToken.value) &&
+    valueToken.type !== TokenType.Unit && // For numeric units like '10px'
+    valueToken.type !== TokenType.Number // For numeric values like '0'
+  ) {
+    throw new Error(`Invalid value '${valueToken.value}' for property '${propertyName}' at position ${valueToken.position}`);
   }
 
-  private check(type: TokenType, value?: string): boolean {
-    if (this.isAtEnd()) return false;
-    const token = this.peek();
-    return token.type === type && (value === undefined || token.value === value);
-  }
+  next(); // Move past the value
 
-  private consume(type: TokenType, value?: string): Token {
-    if (this.check(type, value)) return this.advance();
-    throw new Error(`Expected ${value || type} but got ${this.peek().value}`);
+  // Expect and validate the semicolon `;`
+  if (current().type !== TokenType.Symbol || current().value !== ";") {
+    throw new Error(`Expected ';' at the end of declaration at position ${current().position}`);
   }
+  next(); 
 
-  private advance(): Token {
-    if (!this.isAtEnd()) this.current++;
-    return this.previous();
-  }
-
-  private peek(): Token {
-    return this.tokens[this.current];
-  }
-
-  private previous(): Token {
-    return this.tokens[this.current - 1];
-  }
-
-  private isAtEnd(): boolean {
-    return this.current >= this.tokens.length || this.peek().type === TokenType.EOF;
-  }
+  return {
+    type: "Declaration",
+    property: propertyName,
+    value: valueToken.value,
+  };
 }
