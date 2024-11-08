@@ -1,9 +1,9 @@
 {
   "name": "sparkcss",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "main": "index.js",
   "bin": {
-    "sparkcss": "dist/cli.js"
+    "sparkcss": "./dist/cli.js"
   },
   "directories": {
     "doc": "docs",
@@ -23,6 +23,7 @@
     "@types/jest": "^29.5.14",
     "jest": "^29.7.0",
     "ts-jest": "^29.2.5",
+    "ts-node": "^10.9.2",
     "typescript": "^5.6.3"
   }
 }
