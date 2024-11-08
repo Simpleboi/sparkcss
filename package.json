@@ -1,9 +1,9 @@
 {
   "name": "sparkcss",
-  "version": "0.1.0",
+  "version": "1.1.0",
   "main": "index.js",
   "bin": {
-    "sparkcss": "./dist/cli/cli.js"
+    "sparkup": "./dist/cli/cli.js"
   },
   "directories": {
     "doc": "docs",
@@ -14,11 +14,11 @@
     "start": "ts-node src/cli/cli.ts",
     "test:watch": "jest --watch",
     "build": "rm -rf dist && tsc",
-    "build:styles": "sparkcss src/styles/input.spark -o dist/styles.css"
+    "build:styles": "sparkup src/styles/input.spark -o dist/styles.css"
   },
   "keywords": [],
   "author": "Nathaniel Paz (n8.jsx)",
-  "license": "ISC",
+  "license": "MIT",
   "description": "A custom css preprocessor",
   "devDependencies": {
     "@types/jest": "^29.5.14",

@@ -3,7 +3,7 @@ import { lexer } from "./lexer";
 import { TokenType } from "./tokens";
 
 // Sample Input to test the lexer
-const sampleInput = `10px20vh30em40`;
+const sampleInput = `10px`;
 
 const tokens = lexer(sampleInput);
 

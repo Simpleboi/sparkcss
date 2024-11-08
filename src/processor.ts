@@ -16,5 +16,4 @@ export function processSparkFile(inputPath: string, outputPath: string) {
 
   // Write the generated CSS to an output file
   fs.writeFileSync(outputPath, cssOutput);  
-  console.log(`Processed ${inputPath} and generated CSS in ${outputPath}`);
 }

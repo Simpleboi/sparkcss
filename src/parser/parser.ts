@@ -21,15 +21,14 @@ export function parse(inputTokens: Token[]): Stylesheet {
     // Skip any empty tokens
     skipEmptyTokens();
 
+    // No more tokens to process
     if (currentIndex >= tokens.length) {
-      console.log("End of tokens reached.");
-      break; // No more tokens to process
+      break; 
     }
 
     const token = current();
 
     // Debug log to track token processing
-    console.log("Processing token:", token);
 
     if (token.type === TokenType.Selector) {
       stylesheet.rules.push(parseRule());

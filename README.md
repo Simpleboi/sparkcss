@@ -1,4 +1,4 @@
-# SparkCSS: A Comprehensive Guide
+# SparkCSS
 
 SparkCSS is a CSS preprocessor that combines SCSS-like features with utility classes similar to Tailwind. SparkCSS is designed to be a versatile and powerful tool for web developers who want to take advantage of utility-first CSS while maintaining flexibility through advanced features like directives, variables, and custom reusable snippets.
 

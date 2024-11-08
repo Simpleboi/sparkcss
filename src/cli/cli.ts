@@ -3,6 +3,7 @@
 import { processSparkFile } from "../processor";
 import * as fs from "fs";
 import * as path from "path";
+import * as packageJson from '../../package.json';
 
 // Define CLI functionality
 const args = process.argv.slice(2);
@@ -11,6 +12,12 @@ const args = process.argv.slice(2);
 if (args.length !== 1) {
   console.error("Usage: sparky <input.spark>");
   process.exit(1);
+}
+
+// Handle --version or -v flag to display version
+if (args.includes('--version') || args.includes('-v')) {
+  console.log(`SparkCSS version: ${packageJson.version}`);
+  process.exit(0);
 }
 
 const inputPath = path.resolve(args[0]);
