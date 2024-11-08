@@ -1,0 +1,30 @@
+.p-1 {
+  padding: 0.25rem;
+}
+.p-2 {
+  padding: 0.5rem;
+}
+.p-4 {
+  padding: 1rem;
+}
+.m-1 {
+  margin: 0.25rem;
+}
+.m-2 {
+  margin: 0.5rem;
+}
+.m-4 {
+  margin: 1rem;
+}
+.text-center {
+  text-align: center;
+}
+.bg-blue-500 {
+  background-color: #3b82f6;
+}
+.w-full {
+  width: 100%;
+}
+.flex {
+  display: flex;
+}

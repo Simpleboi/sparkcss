@@ -14,8 +14,14 @@
     "start": "ts-node src/cli/cli.ts",
     "test:watch": "jest --watch",
     "build": "rm -rf dist && tsc",
-    "build:styles": "sparkup src/styles/input.spark -o dist/styles.css"
+    "build:styles": "sparkup src/styles/input.spark -o dist/styles.css",
+    "build:utility" : "ts-node ./src/utilClasses/generateUtilities.ts"
   },
+  "files": [
+    "dist/",
+    "sparkcss-utilities.css",
+    "src/"
+  ],
   "keywords": [],
   "author": "Nathaniel Paz (n8.jsx)",
   "license": "MIT",

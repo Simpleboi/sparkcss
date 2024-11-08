@@ -4,6 +4,10 @@ tests/
 .git/
 .tours/
 
+*.ts
+!dist/
+!sparkcss-utilities.css
+
 # Ignore node modules
 node_modules/
 
