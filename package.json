@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "main": "index.js",
   "bin": {
-    "sparkcss": "./dist/cli.js"
+    "sparkcss": "./dist/cli/cli.js"
   },
   "directories": {
     "doc": "docs",
@@ -11,6 +11,7 @@
   },
   "scripts": {
     "test": "jest",
+    "start": "ts-node src/cli/cli.ts",
     "test:watch": "jest --watch",
     "build": "rm -rf dist && tsc",
     "build:styles": "sparkcss src/styles/input.spark -o dist/styles.css"
