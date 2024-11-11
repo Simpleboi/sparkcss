@@ -16,3 +16,4 @@ function generateAllUtilityClasses(): string {
 const generatedCSS = generateAllUtilityClasses();
 fs.writeFileSync('sparkcss-utilities.css', generatedCSS);
 console.log('Generated full utility CSS file: sparkcss-utilities.css');
+// Just an example
