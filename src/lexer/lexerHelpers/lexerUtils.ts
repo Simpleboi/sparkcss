@@ -1,8 +1,8 @@
 // lexerUtils.ts
 import { Token, TokenType } from "../tokens";
 
-let _input = ""; // Private input variable
-let _position = 0; // Private position variable
+let _input = ""; 
+let _position = 0; 
 export const tokens: Token[] = []; // Array to store all tokens
 
 // Initialize the lexer with the input string and reset position and tokens

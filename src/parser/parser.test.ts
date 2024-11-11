@@ -3,9 +3,11 @@ import { lexer } from "../lexer/lexer";
 import { parse } from "./parser";
 
 const sampleInput = `
+$primary-color: red;
+
 .my-class {
-  position: sticky;
-  display: block;
+  color: $primary-color;
+  padding: 1rem;
 }
 `;
 

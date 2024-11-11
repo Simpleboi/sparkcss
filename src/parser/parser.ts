@@ -23,19 +23,33 @@ export function parse(inputTokens: Token[]): Stylesheet {
 
     // No more tokens to process
     if (currentIndex >= tokens.length) {
-      break; 
+      break;
     }
 
     const token = current();
 
     // Debug log to track token processing
+    console.log(
+      `Processing token: { type: ${token.type}, value: ${token.value}, position: ${token.position} }`
+    );
 
-    if (token.type === TokenType.Selector) {
+    // Handle variable declarations
+    if (token.type === TokenType.Variable) {
+      parseVariableDeclaration(); // Parse and store variable
+    }
+    // Handle CSS rules
+    else if (token.type === TokenType.Selector) {
       stylesheet.rules.push(parseRule());
-    } else if (token.type === TokenType.EOF) {
-      break; 
-    } else {
-      throw new Error(`Unexpected token: ${token.value} at position ${token.position}`);
+    }
+    // Handle end of file
+    else if (token.type === TokenType.EOF) {
+      break;
+    }
+    // Unexpected tokens
+    else {
+      throw new Error(
+        `Unexpected token: ${token.value} at position ${token.position}`
+      );
     }
   }
 
@@ -62,7 +76,9 @@ function next(): void {
 function parseRule(): Rule {
   const selectorToken = current();
   if (selectorToken.type !== TokenType.Selector) {
-    throw new Error(`Expected Selector, but got ${selectorToken.type} at position ${selectorToken.position}`);
+    throw new Error(
+      `Expected Selector, but got ${selectorToken.type} at position ${selectorToken.position}`
+    );
   }
 
   const rule: Rule = {
@@ -75,7 +91,7 @@ function parseRule(): Rule {
   if (current().type !== TokenType.Symbol || current().value !== "{") {
     throw new Error(`Expected '{' after selector`);
   }
-  next(); 
+  next();
 
   // Parse all declarations inside the rule
   while (current().type !== TokenType.Symbol || current().value !== "}") {
@@ -90,21 +106,30 @@ function parseDeclaration(): Declaration {
   const propertyToken = current();
 
   // Validate the property name
-  if (propertyToken.type !== TokenType.Property && propertyToken.type !== TokenType.Identifier) {
-    throw new Error(`Expected Property, but got ${propertyToken.type} at position ${propertyToken.position}`);
+  if (
+    propertyToken.type !== TokenType.Property &&
+    propertyToken.type !== TokenType.Identifier
+  ) {
+    throw new Error(
+      `Expected Property, but got ${propertyToken.type} at position ${propertyToken.position}`
+    );
   }
 
   // Check if the property is a valid CSS property
   const propertyName = propertyToken.value;
   if (!cssProperties.includes(propertyName)) {
-    throw new Error(`Unknown property '${propertyName}' at position ${propertyToken.position}`);
+    throw new Error(
+      `Unknown property '${propertyName}' at position ${propertyToken.position}`
+    );
   }
 
-  next(); 
+  next();
 
   // Expect and validate the colon `:`
   if (current().type !== TokenType.Symbol || current().value !== ":") {
-    throw new Error(`Expected ':' after property name at position ${current().position}`);
+    throw new Error(
+      `Expected ':' after property name at position ${current().position}`
+    );
   }
   next(); // Move past `:`
 
@@ -117,20 +142,60 @@ function parseDeclaration(): Declaration {
     valueToken.type !== TokenType.Unit && // For numeric units like '10px'
     valueToken.type !== TokenType.Number // For numeric values like '0'
   ) {
-    throw new Error(`Invalid value '${valueToken.value}' for property '${propertyName}' at position ${valueToken.position}`);
+    throw new Error(
+      `Invalid value '${valueToken.value}' for property '${propertyName}' at position ${valueToken.position}`
+    );
   }
 
   next(); // Move past the value
 
   // Expect and validate the semicolon `;`
   if (current().type !== TokenType.Symbol || current().value !== ";") {
-    throw new Error(`Expected ';' at the end of declaration at position ${current().position}`);
+    throw new Error(
+      `Expected ';' at the end of declaration at position ${current().position}`
+    );
   }
-  next(); 
+  next();
 
   return {
     type: "Declaration",
     property: propertyName,
     value: valueToken.value,
   };
+}
+
+// Variable dictionary to store variables and their values
+const variableDict: { [key: string]: string } = {};
+function parseVariableDeclaration(): void {
+  const variableToken = current();
+  if (variableToken.type !== TokenType.Variable) {
+    throw new Error(`Expected a Variable, but got ${variableToken.type}`);
+  }
+  next(); // Move past the variable token
+
+  // Expect a colon after the variable name
+  if (current().type !== TokenType.Symbol || current().value !== ":") {
+    throw new Error(`Expected ':' after variable name`);
+  }
+  next(); // Move past the colon
+
+  // Read the value after the colon
+  const valueToken = current();
+  if (
+    valueToken.type !== TokenType.Value &&
+    valueToken.type !== TokenType.Color &&
+    valueToken.type !== TokenType.Number
+  ) {
+    throw new Error(`Expected a value after ':' for the variable`);
+  }
+  next(); // Move past the value
+
+  // Store the variable and its value in the dictionary
+  variableDict[variableToken.value] = valueToken.value;
+
+  // Expect a semicolon at the end of the declaration
+  if (current().type !== TokenType.Symbol || current().value !== ";") {
+    throw new Error(`Expected ';' at the end of variable declaration`);
+  }
+  next(); // Move past the semicolon
 }
