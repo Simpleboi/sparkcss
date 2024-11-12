@@ -3,8 +3,7 @@ import { lexer } from "./lexer";
 import { TokenType } from "./tokens";
 
 // Sample Input to test the lexer
-const sampleInput = `
-$primary-color: red;
+const sampleInput = `$primary-color: red;
 
 .my-class {
   color: $primary-color;

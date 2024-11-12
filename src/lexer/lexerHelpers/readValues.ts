@@ -6,8 +6,6 @@ export function readValue() {
   let value = "";
   const char = peek();
 
-  // Log the character being processed
-  console.log(`Processing value at position ${getPosition()}, char: '${char}'`);
 
   // Handle Colors (Hex Codes) or Color Keywords
   if (char === "#") {

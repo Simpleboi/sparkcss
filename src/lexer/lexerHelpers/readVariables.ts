@@ -12,7 +12,6 @@ export function readVariable() {
             variable += advance();
         }
 
-        // Add the variable token to the token list
         addToken(TokenType.Variable, variable);
     }
 }

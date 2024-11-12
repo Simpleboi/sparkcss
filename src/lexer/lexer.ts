@@ -17,11 +17,13 @@ import { readOperator } from "./lexerHelpers/readOperator";
 import { readDirective } from "./lexerHelpers/readDirective";
 import { readVariable } from "./lexerHelpers/readVariables";
 import { readValue } from "./lexerHelpers/readValues";
+import { readProperty } from "./lexerHelpers/readProperty";
 
 export function lexer(input: string): Token[] {
   initializeLexer(input); // Initialize the lexer with input
 
-  // Main loop: iterate over the input string and build tokens
+  let blockDepth = 0;
+
   while (getPosition() < getInput().length) {
     skipWhitespace();
     const char = peek();
@@ -33,24 +35,32 @@ export function lexer(input: string): Token[] {
       // Read variable (e.g., $primary-color)
       readVariable();
     } else if (char === "." || char === "#" || /[a-zA-Z]/.test(char)) {
-      // Read selector or identifier
-      readSelector();
+      if (blockDepth > 0) {
+        readProperty();
+      } else {
+        readSelector();
+      }
     } else if (/\d/.test(char)) {
       // Read number (e.g., 10px, 1rem)
       readNumber();
     } else if (char === ":") {
-      // If a colon is encountered, it indicates the beginning of a value
-      advance(); // Move past the colon
-      skipWhitespace(); // Skip any whitespace after the colon
-      readValue(); // Read the value
-    } else if ("{},;".includes(char) || char === "=") {
-      // Read symbols (e.g., {, }, ; )
+      advance(); 
+      addToken(TokenType.Symbol, ":");
+      skipWhitespace();
+      readValue(); 
+    } else if (char === "{") {
+      advance(); 
+      addToken(TokenType.Symbol, "{");
+      blockDepth++;
+    } else if (char === "}") {
+      advance(); 
+      addToken(TokenType.Symbol, "}");
+      blockDepth--;
+    } else if (";,{}".includes(char)) {
       readSymbol();
     } else if ("+-*/><=!&|".includes(char)) {
-      // Read operators (e.g., +, -, *, /, >, <, etc.)
       readOperator();
     } else {
-      // Unexpected character, throw an error
       throw new Error(
         `Unexpected character: ${char} at position ${getPosition()}`
       );
