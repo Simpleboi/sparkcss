@@ -1,1 +1,4 @@
 
+.my-class {
+    color: red;
+}

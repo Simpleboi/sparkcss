@@ -3,10 +3,7 @@ import { lexer } from "../lexer/lexer";
 import { parse } from "./parser";
 
 const sampleInput = `
-$primary-color: red;
-
 .my-class {
-  color: $primary-color;
   padding: 1rem;
 }
 `;

@@ -1,7 +1,7 @@
 import { Token, TokenType } from "./tokens";
 import {
   initializeLexer,
-  tokens,
+  _tokens,
   peek,
   addToken,
   skipWhitespace,
@@ -9,7 +9,6 @@ import {
   getInput,
   advance,
 } from "./lexerHelpers/lexerUtils";
-import { readIdentifier } from "./lexerHelpers/readIdentifier";
 import { readSelector } from "./lexerHelpers/readSelector";
 import { readNumber } from "./lexerHelpers/readNumber";
 import { readSymbol } from "./lexerHelpers/readSymbol";
@@ -69,5 +68,5 @@ export function lexer(input: string): Token[] {
 
   // Add an EOF token at the end of the input
   addToken(TokenType.EOF, "");
-  return tokens;
+  return _tokens;
 }

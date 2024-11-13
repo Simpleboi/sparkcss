@@ -15,7 +15,7 @@
     "test:watch": "jest --watch",
     "build": "rm -rf dist && tsc",
     "build:styles": "sparkup src/styles/input.spark -o dist/styles.css",
-    "build:utility" : "ts-node ./src/utilClasses/generateUtilities.ts"
+    "build:utility": "ts-node ./src/utilClasses/generateUtilities.ts"
   },
   "files": [
     "dist/",
@@ -32,5 +32,8 @@
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.3"
+  },
+  "dependencies": {
+    "mdn-data": "^2.12.2"
   }
 }

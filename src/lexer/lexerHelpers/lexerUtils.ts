@@ -3,7 +3,7 @@ import { Token, TokenType } from "../tokens";
 
 let _input = ""; 
 let _position = 0; 
-let _tokens: Token[] = []; 
+export let _tokens: Token[] = []; 
 let _currentIndex = 0; 
 
 // Initialize the lexer with the input string and reset position and tokens
@@ -49,6 +49,7 @@ export function skipWhitespace() {
 }
 
 
+// Parser Utilities
 export function initializeParser(inputTokens: Token[]): void {
   _tokens = inputTokens;
   _currentIndex = 0;
