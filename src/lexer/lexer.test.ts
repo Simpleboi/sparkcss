@@ -4,8 +4,10 @@ import { TokenType } from "./tokens";
 
 // Sample Input to test the lexer
 const sampleInput = `
+$padding: 1rem;
+
 .my-class {
-  padding: 1rem;
+  padding: $padding;
 }
 `;
 

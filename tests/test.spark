@@ -1,4 +1,9 @@
 
+
 .my-class {
-    color: red;
+    border-radius: 10px;
+};
+
+.my-class:hover {
+    padding: 10px
 }

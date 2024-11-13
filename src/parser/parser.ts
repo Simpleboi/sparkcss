@@ -1,5 +1,4 @@
 // parser.ts
-// parser.ts
 import { Token, TokenType } from "../lexer/tokens";
 import { Stylesheet } from "./ast";
 import {

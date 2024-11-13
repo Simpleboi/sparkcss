@@ -3,8 +3,10 @@ import { lexer } from "../lexer/lexer";
 import { parse } from "./parser";
 
 const sampleInput = `
+$padding: 1rem;
+
 .my-class {
-  padding: 1rem;
+  padding: $padding;
 }
 `;
 

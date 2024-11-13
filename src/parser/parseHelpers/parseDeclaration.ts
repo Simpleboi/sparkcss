@@ -2,12 +2,13 @@
 import { TokenType } from "../../lexer/tokens";
 import { Declaration } from "../ast";
 import { current, next } from "../../lexer/lexerHelpers/lexerUtils";
+import { getVariableValue } from "./parseVariable";
 import cssPropertiesData from "mdn-data/css/properties.json"; 
 
 export function parseDeclaration(): Declaration {
-  const propertyToken = current();
+  console.log("Starting parseDeclaration at position", current().position);
 
-  console.log(`Starting parseDeclaration at position ${propertyToken.position}`);
+  const propertyToken = current();
 
   // Validate that the token is a property type
   if (propertyToken.type !== TokenType.Property) {
@@ -28,59 +29,55 @@ export function parseDeclaration(): Declaration {
     );
   }
 
-  console.log(`Property '${propertyName}' is valid`);
-  next(); 
+  next();
 
   // Expect and validate the colon `:`
-  const colonToken = current();
-  if (colonToken.type !== TokenType.Symbol || colonToken.value !== ":") {
+  if (current().type !== TokenType.Symbol || current().value !== ":") {
     throw new Error(
-      `Expected ':' after property name at position ${colonToken.position}`
+      `Expected ':' after property name at position ${current().position}`
     );
   }
-  console.log(`Found ':' at position ${colonToken.position}`);
   next();
 
   // Parse the value
   const valueToken = current();
-  console.log(`Parsing value: ${valueToken.value} at position ${valueToken.position}`);
-  let validValues: string[] = [];
+  let value = valueToken.value;
 
-  // Use the `values` or `syntax` properties for validation if available
-  if ("values" in propertyDetails) {
-    validValues =
-      (propertyDetails as any).values?.map((val: any) => val.name) || [];
-  }
-
-  if (
-    !validValues.includes(valueToken.value) &&
-    valueToken.type !== TokenType.Unit && // For numeric units like '10px'
-    valueToken.type !== TokenType.Number && // For numeric values like '0'
-    valueToken.type !== TokenType.Color // For color values like '#fff', if applicable
+  if (valueToken.type === TokenType.Variable) {
+    // If the value is a variable, look it up in the dictionary
+    const variableValue = getVariableValue(value);
+    if (!variableValue) {
+      throw new Error(
+        `Undefined variable '${value}' at position ${valueToken.position}`
+      );
+    }
+    value = variableValue; // Replace the variable with its actual value
+  } else if (
+    valueToken.type !== TokenType.Unit &&
+    valueToken.type !== TokenType.Number &&
+    valueToken.type !== TokenType.Color &&
+    valueToken.type !== TokenType.Value
   ) {
     throw new Error(
-      `Invalid value '${valueToken.value}' for property '${propertyName}' at position ${valueToken.position}`
+      `Invalid value '${value}' for property '${propertyName}' at position ${valueToken.position}`
     );
   }
 
-  console.log(`Value '${valueToken.value}' is valid for property '${propertyName}'`);
-  next(); // Move past the value
+  next(); 
 
   // Expect and validate the semicolon `;`
-  const semicolonToken = current();
-  if (semicolonToken.type !== TokenType.Symbol || semicolonToken.value !== ";") {
+  if (current().type !== TokenType.Symbol || current().value !== ";") {
     throw new Error(
-      `Expected ';' at the end of declaration at position ${semicolonToken.position}`
+      `Expected ';' at the end of declaration at position ${current().position}`
     );
   }
-  console.log(`Found ';' at position ${semicolonToken.position}`);
-  next(); // Move past `;`
+  next(); 
 
   console.log(`Successfully parsed declaration for property '${propertyName}'`);
 
   return {
     type: "Declaration",
     property: propertyName,
-    value: valueToken.value,
+    value: value,
   };
 }

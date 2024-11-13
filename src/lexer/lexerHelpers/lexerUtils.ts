@@ -65,7 +65,7 @@ export function current(): Token {
 
 // Move to the next token
 export function next(): void {
-  if (_currentIndex < _tokens.length - 1) {
+  if (_currentIndex < _tokens.length) {
     _currentIndex++;
   }
 }

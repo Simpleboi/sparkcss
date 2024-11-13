@@ -11,12 +11,8 @@ EOF
 Directive
 
 Token Tests Fail For
-Identifier
 Color
-Property
-Value
 Keyword
-
 
 
 <!-- First Problem with Lexer -->

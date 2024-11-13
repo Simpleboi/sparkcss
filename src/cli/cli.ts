@@ -6,18 +6,18 @@ import * as path from "path";
 import * as packageJson from '../../package.json';
 
 // Define CLI functionality
-const args = process.argv.slice(2);
-
-// Ensure only one argument (the input file) is provided
-if (args.length !== 1) {
-  console.error("Usage: sparky <input.spark>");
-  process.exit(1);
-}
+let args = process.argv.slice(2);
 
 // Handle --version or -v flag to display version
 if (args.includes('--version') || args.includes('-v')) {
   console.log(`SparkCSS version: ${packageJson.version}`);
   process.exit(0);
+}
+
+// Ensure only one argument (the input file) is provided
+if (args.length !== 1) {
+  console.error("Usage: sparkup <input.spark>");
+  process.exit(1);
 }
 
 const inputPath = path.resolve(args[0]);

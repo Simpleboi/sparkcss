@@ -1,1 +1,0 @@
-# For writing bash related stuff
