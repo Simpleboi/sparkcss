@@ -14,6 +14,17 @@ export enum TokenType {
   Keyword,        // For SparkCSS specifc keywords
   Snippet,        // Snippet directive
   Apply,          // To apply Snippets
+  DirectiveStart,   // Represents the '@' symbol
+  DirectiveKeyword, // Represents the keyword of a directive (e.g., snippet)
+  DirectiveName,    // Represents the name of a specific directive (e.g., flexboxCenter)
+  CurlyStart,       // Represents the '{' symbol
+  CurlyEnd,         // Represents the '}' symbol
+  ParameterStart,   // Represents the '(' symbol
+  ParameterEnd,     // Represents the ')' symbol
+  Colon,            // Represents ':'
+  Semicolon,        // Represents ';'
+  Comma,            // Represents ','
+  Parameters,
   EOF,
 }
 

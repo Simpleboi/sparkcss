@@ -4,8 +4,9 @@ import { TokenType } from "./tokens";
 
 // Sample Input to test the lexer
 const sampleInput = `
-@directive
-
+@deez: flexBox() { 
+  padding-top: 10px;
+};
 `;
 
 const tokens = lexer(sampleInput);

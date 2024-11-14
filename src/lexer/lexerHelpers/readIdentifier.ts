@@ -1,16 +1,20 @@
+import { advance, peek, getPosition, getInput } from "./lexerUtils";
+import { addToken } from "./lexerUtils";
 import { TokenType } from "../tokens";
-import { addToken, peek, advance, getInput, getPosition } from "./lexerUtils";
 
-export function readIdentifier() {
+export function readIdentifier(): string {
   let identifier = "";
 
-  // Capture valid identifier characters until an invalid one is found or end of input
+  // Read characters that are part of the identifier
   while (getPosition() < getInput().length && /[a-zA-Z0-9_-]/.test(peek())) {
-    identifier += advance();
+    identifier += advance(); 
   }
 
-  // Only add a token if the identifier has a valid length
-  if (identifier.length > 0) {
-    addToken(TokenType.Identifier, identifier);
-  }
+  return identifier;
+}
+
+// Usage to add a token, if required
+export function readIdentifierAsToken() {
+  const identifier = readIdentifier();
+  addToken(TokenType.Identifier, identifier);
 }
