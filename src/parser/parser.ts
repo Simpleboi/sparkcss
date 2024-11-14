@@ -10,6 +10,8 @@ import {
 } from "../lexer/lexerHelpers/lexerUtils";
 import { parseRule } from "./parseHelpers/parseRule";
 import { parseVariable } from "./parseHelpers/parseVariable";
+import { parseSnippet } from "./directives/parseSnippet";
+import { parseApply } from "./directives/parseApply";
 
 export function parse(inputTokens: Token[]): Stylesheet {
   initializeParser(inputTokens);
@@ -35,19 +37,16 @@ export function parse(inputTokens: Token[]): Stylesheet {
     );
 
     if (token.type === TokenType.Variable) {
-      // Parse the variable
       parseVariable();
     } else if (token.type === TokenType.Selector) {
-      // Parse the CSS rule and add it to the stylesheet
       stylesheet.rules.push(parseRule());
-
-      // After parsing a rule, ensure we move forward to the next meaningful token
-      next();
+    } else if (token.type === TokenType.Snippet) {
+      parseSnippet();
+    } else if (token.type === TokenType.Apply) {
+      parseApply(stylesheet.rules[stylesheet.rules.length - 1].declarations);
     } else if (token.type === TokenType.EOF) {
-      // Break the loop if we reach the end of the file
       break;
     } else {
-      // Throw an error for unexpected tokens
       throw new Error(
         `Unexpected token: ${token.value} at position ${token.position}`
       );

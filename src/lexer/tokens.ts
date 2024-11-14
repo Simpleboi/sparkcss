@@ -12,6 +12,8 @@ export enum TokenType {
   Value,          // For CSS specific values
   Symbol,         // For symbols like {} ; :
   Keyword,        // For SparkCSS specifc keywords
+  Snippet,        // Snippet directive
+  Apply,          // To apply Snippets
   EOF,
 }
 

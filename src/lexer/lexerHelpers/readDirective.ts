@@ -4,18 +4,21 @@ import { addToken, peek, advance, getInput, getPosition } from "./lexerUtils";
 export function readDirective() {
   let directive = "";
 
-  // Start with the `@` symbol
+  // Capture the initial '@'
   if (peek() === "@") {
-    directive += advance();
+    directive += advance(); // Move past '@'
 
-    // Capture the directive name (alphanumeric characters, underscore, or hyphen)
-    while (getPosition() < getInput().length && /[a-zA-Z0-9_-]/.test(peek())) {
+    // Read characters after the '@' (e.g., snippet, apply)
+    while (getPosition() < getInput().length && /[a-zA-Z]/.test(peek())) {
       directive += advance();
     }
 
-    // Add the directive token
-    addToken(TokenType.Directive, directive);
-  } else {
-    throw new Error(`Expected '@' for directive at position ${getPosition()}`);
+    if (directive === "@snippet") {
+      addToken(TokenType.Snippet, directive);
+    } else if (directive === "@apply") {
+      addToken(TokenType.Apply, directive);
+    } else {
+      throw new Error(`Unknown directive: ${directive} at position ${getPosition()}`);
+    }
   }
 }

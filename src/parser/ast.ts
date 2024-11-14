@@ -17,4 +17,16 @@ export type Declaration = {
   value: string;
 };
 
-export type ASTNode = Stylesheet | Rule | Declaration;
+export interface Snippet {
+  type: "Snippet";
+  name: string;
+  declarations: Declaration[];
+}
+
+// Add ApplySnippet definition (optional)
+export interface ApplySnippet {
+  type: "ApplySnippet";
+  snippetName: string;
+}
+
+export type ASTNode = Stylesheet | Rule | Declaration | Snippet | ApplySnippet;
