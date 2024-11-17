@@ -1,16 +1,16 @@
 // lexerUtils.ts
 import { Token, TokenType } from "../tokens";
 
-let _input = ""; 
-let _position = 0; 
-export let _tokens: Token[] = []; 
-let _currentIndex = 0; 
+let _input = "";
+let _position = 0;
+export let _tokens: Token[] = [];
+let _currentIndex = 0;
 
 // Initialize the lexer with the input string and reset position and tokens
 export function initializeLexer(newInput: string) {
   _input = newInput;
   _position = 0;
-  _tokens.length = 0; 
+  _tokens.length = 0;
 }
 
 // Getter for the input string
@@ -48,7 +48,6 @@ export function skipWhitespace() {
   }
 }
 
-
 // Parser Utilities
 export function initializeParser(inputTokens: Token[]): void {
   _tokens = inputTokens;
@@ -78,4 +77,19 @@ export function skipEmptyTokens() {
 
 export function isEndOfTokens(): boolean {
   return _currentIndex >= _tokens.length;
+}
+
+
+// Expect a token of a specific type and optionally a value
+// Expect a token of a specific type and optionally a value
+export function expectToken(expectedType: TokenType, errorMessage: string, expectedValue?: string) {
+  const token = current();
+  
+  if (token.type !== expectedType) {
+    throw new Error(`${errorMessage}. Expected token type '${expectedType}' but got '${token.type}' at position ${token.position}`);
+  }
+
+  if (expectedValue !== undefined && token.value !== expectedValue) {
+    throw new Error(`${errorMessage}. Expected token value '${expectedValue}' but got '${token.value}' at position ${token.position}`);
+  }
 }

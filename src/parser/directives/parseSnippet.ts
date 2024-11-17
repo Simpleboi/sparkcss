@@ -1,75 +1,59 @@
 import { TokenType } from "../../lexer/tokens";
-import { Declaration, Snippet } from "../ast";
-import {
-  current,
-  next,
-  skipEmptyTokens,
-} from "../../lexer/lexerHelpers/lexerUtils";
+import { Snippet, Declaration } from "../ast";
+import { current, next, expectToken, skipEmptyTokens } from "../../lexer/lexerHelpers/lexerUtils";
 import { parseDeclaration } from "../parseHelpers/parseDeclaration";
+import { registerSnippet } from "../parseHelpers/snippetRegistry";
 
-const snippetStorage: Map<string, Snippet> = new Map();
-
-// Snippets dictionary to store snippet definitions
 export function parseSnippet(): Snippet {
-  skipEmptyTokens();
+  // We expect that the '@' has already been processed
 
-  const snippetToken = current();
+  // Expect the keyword part of the directive to be 'snippet'
+  expectToken(TokenType.DirectiveKeyword, "Expected 'snippet' keyword to start snippet", "snippet");
+  next(); // Move past the 'snippet' keyword
 
-  if (
-    snippetToken.type !== TokenType.Directive ||
-    snippetToken.value !== "@snippet"
-  ) {
-    throw new Error(
-      `Expected '@snippet', but got ${snippetToken.value} at position ${snippetToken.position}`
-    );
-  }
-
-  next(); // Move past '@snippet'
-
-  const snippetNameToken = current();
-
-  if (snippetNameToken.type !== TokenType.Identifier) {
-    throw new Error(
-      `Expected a snippet name, but got ${snippetNameToken.value} at position ${snippetNameToken.position}`
-    );
-  }
-
-  const snippetName = snippetNameToken.value;
+  // Expect and get the snippet name
+  expectToken(TokenType.DirectiveName, "Expected snippet name");
+  const snippetName = current().value;
   next(); // Move past snippet name
 
-  if (current().type !== TokenType.Symbol || current().value !== "{") {
-    throw new Error(
-      `Expected '{' after snippet name at position ${current().position}`
-    );
+  // Handle parameters, if any
+  let parameters = "";
+  if (current().type === TokenType.Parameters) {
+    parameters = current().value;
+    next(); // Move past parameters
   }
 
-  next(); // Move past '{'
+  skipEmptyTokens();
+
+  // Expect opening curly brace
+  expectToken(TokenType.CurlyStart, "Expected '{' to start snippet body");
+  next(); // Move past the '{'
 
   const declarations: Declaration[] = [];
 
-  while (current().type !== TokenType.Symbol || current().value !== "}") {
+  // Parse all declarations until closing curly brace
+  while (current().type !== TokenType.CurlyEnd) {
+    skipEmptyTokens();
     declarations.push(parseDeclaration());
+    skipEmptyTokens();
   }
 
-  next(); // Move past '}'
+  // Move past the closing curly brace
+  expectToken(TokenType.CurlyEnd, "Expected '}' to close snippet body");
+  next(); // Move past the '}'
 
-  const snippet: Snippet = {
+  // Expect semicolon
+  expectToken(TokenType.Semicolon, "Expected ';' after snippet body");
+  next(); // Move past the ';'
+
+  // Register the snippet (name and declarations)
+  registerSnippet(snippetName, declarations);
+
+  return {
     type: "Snippet",
     name: snippetName,
+    parameters,
     declarations,
   };
-
-  // Store the snippet in the global storage
-  snippetStorage.set(snippetName, snippet);
-
-  return snippet;
 }
 
-// Function to get snippet declarations by name
-export function getSnippetDeclarations(snippetName: string): Declaration[] {
-    const snippet = snippetStorage.get(snippetName);
-    if (!snippet) {
-      throw new Error(`Snippet '${snippetName}' not found.`);
-    }
-    return snippet.declarations;
-  }

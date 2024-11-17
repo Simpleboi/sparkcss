@@ -44,16 +44,16 @@ export function lexer(input: string): Token[] {
       readNumber();
     } else if (char === ":") {
       advance(); 
-      addToken(TokenType.Symbol, ":");
+      addToken(TokenType.Colon, ":");
       skipWhitespace();
       readValue(); 
     } else if (char === "{") {
       advance(); 
-      addToken(TokenType.Symbol, "{");
+      addToken(TokenType.CurlyStart, "{");
       blockDepth++;
     } else if (char === "}") {
       advance(); 
-      addToken(TokenType.Symbol, "}");
+      addToken(TokenType.CurlyEnd, "}");
       blockDepth--;
     } else if (";,{}".includes(char)) {
       readSymbol();

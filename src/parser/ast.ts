@@ -1,27 +1,29 @@
 // ast.ts
 
-export type Stylesheet = {
+export interface Stylesheet {
   type: "Stylesheet";
   rules: Rule[];
-};
+  snippets: Snippet[];
+}
 
-export type Rule = {
+export interface Rule {
   type: "Rule";
   selector: string;
   declarations: Declaration[];
-};
+}
+
+export interface Snippet {
+  type: "Snippet";
+  name: string;
+  parameters: string;
+  declarations: Declaration[];
+}
 
 export type Declaration = {
   type: "Declaration";
   property: string;
   value: string;
 };
-
-export interface Snippet {
-  type: "Snippet";
-  name: string;
-  declarations: Declaration[];
-}
 
 // Add ApplySnippet definition (optional)
 export interface ApplySnippet {

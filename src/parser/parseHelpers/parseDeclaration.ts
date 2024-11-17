@@ -32,7 +32,7 @@ export function parseDeclaration(): Declaration {
   next();
 
   // Expect and validate the colon `:`
-  if (current().type !== TokenType.Symbol || current().value !== ":") {
+  if (current().type !== TokenType.Colon || current().value !== ":") {
     throw new Error(
       `Expected ':' after property name at position ${current().position}`
     );
@@ -66,7 +66,7 @@ export function parseDeclaration(): Declaration {
   next(); 
 
   // Expect and validate the semicolon `;`
-  if (current().type !== TokenType.Symbol || current().value !== ";") {
+  if (current().type !== TokenType.Semicolon || current().value !== ";") {
     throw new Error(
       `Expected ';' at the end of declaration at position ${current().position}`
     );

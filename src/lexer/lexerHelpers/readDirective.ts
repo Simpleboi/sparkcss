@@ -1,4 +1,3 @@
-// readDirective.ts
 import { TokenType } from "../tokens";
 import {
   addToken,
@@ -11,21 +10,34 @@ import {
 import { readIdentifier } from "./readIdentifier";
 
 export function readDirective() {
-
   // Start by advancing after the '@' symbol
-  if (peek() === '@') {
-    advance(); 
-    addToken(TokenType.DirectiveStart, '@');
+  if (peek() === "@") {
+    advance();
+    addToken(TokenType.DirectiveStart, "@");
   } else {
     throw new Error(`Expected '@' symbol at position ${getPosition()}`);
   }
 
   skipWhitespace();
 
-  // Read the keyword part of the directive (e.g., `snippet`)
+  // Read the keyword part of the directive (e.g., `snippet` or `apply`)
   const keyword = readIdentifier();
-  addToken(TokenType.DirectiveKeyword, keyword);
 
+  if (keyword === "snippet") {
+    addToken(TokenType.DirectiveKeyword, keyword);
+    readSnippet();
+  } else if (keyword === "apply") {
+    addToken(TokenType.DirectiveKeyword, keyword);
+    readApply();
+  } else {
+    throw new Error(
+      `Unknown directive keyword '${keyword}' at position ${getPosition()}`
+    );
+  }
+}
+
+// Function to read snippet directive
+function readSnippet() {
   skipWhitespace();
 
   // Expect and read a colon (`:`)
@@ -49,7 +61,7 @@ export function readDirective() {
 
   // Check if we have parameters (`()`)
   if (peek() === "(") {
-    let parameters = advance(); 
+    let parameters = advance();
 
     // Read the parameters until closing `)`
     while (peek() !== ")" && getPosition() < getInput().length) {
@@ -81,9 +93,9 @@ export function readDirective() {
 
   skipWhitespace();
 
-  // Read the body of the directive until the closing curly brace (`}`)
+  // Read the body of the snippet until the closing curly brace (`}`)
   while (peek() !== "}" && getPosition() < getInput().length) {
-    skipWhitespace(); 
+    skipWhitespace();
 
     const char = peek();
 
@@ -111,26 +123,77 @@ export function readDirective() {
     } else if (char === ";") {
       addToken(TokenType.Semicolon, advance());
     } else {
-      throw new Error(`Unexpected character in directive body at position ${getPosition()}`);
+      throw new Error(
+        `Unexpected character in snippet body at position ${getPosition()}`
+      );
     }
     skipWhitespace();
   }
 
   skipWhitespace();
 
-
   // Expect a closing curly brace (`}`)
   if (peek() === "}") {
-    addToken(TokenType.CurlyEnd, advance()); 
+    addToken(TokenType.CurlyEnd, advance());
   } else {
     throw new Error(`Expected '}' at position ${getPosition()}`);
   }
 
   skipWhitespace();
 
+  // Expect and handle a semicolon (`;`)
+  if (peek() === ";") {
+    addToken(TokenType.Semicolon, advance());
+  }
+}
+
+// Function to read apply directive
+function readApply() {
+  skipWhitespace();
+
+  // Expect and read a colon (`:`)
+  if (peek() === ":") {
+    advance(); 
+    addToken(TokenType.Colon, ":");
+  } else {
+    throw new Error(
+      `Expected ':' after apply keyword at position ${getPosition()}`
+    );
+  }
+
+  skipWhitespace();
+
+  // Read the snippet name to apply (e.g., `flexBoxCenter`)
+  const snippetName = readIdentifier();
+  addToken(TokenType.DirectiveName, snippetName);
+
+  skipWhitespace();
+
+  // Expect and read the parentheses `()` if parameters are used
+  if (peek() === "(") {
+    let parameters = advance(); // Capture '('
+
+    while (peek() !== ")" && getPosition() < getInput().length) {
+      parameters += advance();
+    }
+
+    // Expect a closing parenthesis `)`
+    if (peek() === ")") {
+      parameters += advance(); 
+      addToken(TokenType.Parameters, parameters);
+    } else {
+      throw new Error(
+        `Expected ')' after snippet name at position ${getPosition()}`
+      );
+    }
+  }
+
+  skipWhitespace();
 
   // Expect and handle a semicolon (`;`)
   if (peek() === ";") {
-    addToken(TokenType.Semicolon, advance()); 
+    addToken(TokenType.Semicolon, advance());
+  } else {
+    throw new Error(`Expected ';' at position ${getPosition()}`);
   }
 }

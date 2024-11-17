@@ -3,11 +3,25 @@ import { lexer } from "../lexer/lexer";
 import { parse } from "./parser";
 
 const sampleInput = `
-$padding: 1rem;
+
+@snippet: flexBoxCenter() {
+  padding: 20px;
+  margin: 10px;
+  border-radius: 10px;
+};
 
 .my-class {
-  padding: $padding;
+  @apply: flexBoxCenter();
 }
+
+.second-class {
+  padding: 10px;
+}
+
+.another-class {
+  padding: 10px;
+};
+
 `;
 
 // Tokenize the input
