@@ -63,4 +63,4 @@ yarn-error.log*
 
 # SparkCSS specific
 # Any other files or folders unique to SparkCSS
-spark.config.json
+# spark.config.json
