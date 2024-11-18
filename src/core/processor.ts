@@ -1,6 +1,6 @@
-import { lexer } from "./lexer/lexer";
-import { parse } from "./parser/parser";
-import { generateCSS } from "./codegen/generator";
+import { lexer } from "../lexer/lexer";
+import { parse } from "../parser/parser";
+import { generateCSS } from "../codegen/generator";
 import fs from "fs";
 
 // Function to process the Spark file

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Main CLI entry point
-import { processSparkFile } from "../processor";
+import { processSparkFile } from "../core/processor";
 import * as fs from "fs";
 import * as path from "path";
 import * as packageJson from '../../package.json';
