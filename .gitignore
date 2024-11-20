@@ -3,6 +3,7 @@ node_modules/
 
 # Distribution folder
 dist/
+bin/
 
 # Build artifacts
 *.log

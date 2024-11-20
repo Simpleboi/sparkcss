@@ -1,0 +1,45 @@
+/* Font Size Utility Classes*/
+.font-2xs { font-size: 8px;}; 
+.font-xs { font-size: 12px;}; 
+.font-sm { font-size: 14px;}; 
+.font-md { font-size: 16px;}; 
+.font-lg { font-size: 20px;}; 
+.font-xl { font-size: 24px;}; 
+.font-2xl { font-size: 32px;}; 
+.font-3xl { font-size: 40px;}; 
+.font-4xl { font-size: 48px;}; 
+.font-5xl { font-size: 64px;}; 
+
+/* Font Weight Utility Classes*/
+.weight-thin { font-weight: 100;}; 
+.weight-extraLight { font-weight: 200;}; 
+.weight-light { font-weight: 300;}; 
+.weight-normal { font-weight: 400;}; 
+.weight-medium { font-weight: 500;}; 
+.weight-semiBold { font-weight: 600;}; 
+.weight-bold { font-weight: 700;}; 
+.weight-extraBold { font-weight: 800;}; 
+.weight-boldest { font-weight: 900;}; 
+
+/* Line Height Utility Classes*/
+.line-none { line-height: 1;}; 
+.line-tight { line-height: 1.25;}; 
+.line-snug { line-height: 1.375;}; 
+.line-normal { line-height: 1.5;}; 
+.line-relaxed { line-height: 1.625;}; 
+.line-loose { line-height: 2;}; 
+
+/* Letter Spacing Utility Classes*/
+.letter-tighter { letter-spacing: -0.05em;}; 
+.letter-tight { letter-spacing: -0.025em;}; 
+.letter-normal { letter-spacing: 0;}; 
+.letter-wide { letter-spacing: 0.025em;}; 
+.letter-wider { letter-spacing: 0.05em;}; 
+.letter-widest { letter-spacing: 0.1em;}; 
+
+/* Text Align Utility Classes*/
+.text-left { text-align: left;}; 
+.text-center { text-align: center;}; 
+.text-right { text-align: right;}; 
+.text-justify { text-align: justify;}; 
+

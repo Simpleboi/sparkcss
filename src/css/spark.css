@@ -1,0 +1,29 @@
+/* Flex Direction Utility Classes*/
+.flex-row { flex-direction: row;} 
+.flex-rReverse { flex-direction: row-reverse;} 
+.flex-col { flex-direction: column;} 
+.flex-cReverse { flex-direction: column-reverse;} 
+
+/* Justify-content Utility Classes*/
+.justify-start { justify-content: flex-start;} 
+.justify-center { justify-content: center;} 
+.justify-end { justify-content: flex-end;} 
+.justify-between { justify-content: space-between;} 
+.justify-around { justify-content: space-around;} 
+.justify-even { justify-content: space-evenly;} 
+.justify-normal { justify-content: normal;} 
+.justify-stretch { justify-content: stretch;} 
+
+/* Flex Wrap Utility Classes*/
+.flex-wrap { flex-wrap: wrap;} 
+.flex-nowrap { flex-wrap: nowrap;} 
+.flex-wrapReverse { flex-wrap: wrap-reverse;} 
+
+/* Flex Flex Grow Utility Classes*/
+.flex-grow-none { flex-grow : 0;} 
+.flex-grow { flex-grow : 1;} 
+
+/* Flex Shrink Utility Classes*/
+.flex-shrink-none { flex-shrink : 0;} 
+.flex-shrink { flex-shrink : 1;} 
+
