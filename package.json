@@ -4,7 +4,7 @@
   "main": "index.js",
   "bin": {
     "sparky": "./dist/cli/cli.js",
-    "spark-utils": "./bin/utilities.js"
+    "spark-utils": "./dist/cli/sparkCli.js"
   },
   "directories": {
     "doc": "docs",

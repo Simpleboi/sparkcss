@@ -1,4 +1,4 @@
-#!/usr/bin/env ts-node
+#!/usr/bin/env node
 import { program } from "commander";
 import { generateTypography } from "../css/cssGenerators/genTypography";
 import { generateColors } from "../css/cssGenerators/genColors";
