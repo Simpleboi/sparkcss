@@ -5,6 +5,7 @@ import { generateColors } from "../css/cssGenerators/genColors";
 import { generateDisplay } from "../css/cssGenerators/genDisplay";
 import { generateBoxModel } from "../css/cssGenerators/genBoxmodel";
 import { generateSpacing } from "../css/cssGenerators/genSpacing";
+import { generateTransform } from "../css/cssGenerators/genTransform";
 
 import { readFileSync, writeFileSync } from "fs";
 import path from "path";
@@ -17,8 +18,10 @@ program
   .option("--colors", "Generate Color Utilities")
   .option("--spacing", "Generate Spacing Utilities")
   .option("--display", "Generate Display Utilities")
+  .option("--transform", "Generate Transform Utilities")
+  .option("--help", "List out all the Utilities")
   .option("--all", "Generate All Utilities")
-  .option("--output <path>", "Specify output file path", "spark.css");
+  .option("--output <path>", "Specify output file path", "./output.css");
 
 program.parse(process.argv);
 
@@ -62,10 +65,29 @@ if (options.display) {
 
 if (options.all) {
   cssOutput += generateTypography(config);
+  cssOutput += generateBoxModel(config);
+  cssOutput += generateColors(config);
+  cssOutput += generateSpacing(config);
+  cssOutput += generateTransform(config);
+  cssOutput += generateDisplay(config);
 }
+
+if (options.help) {
+  console.log("\nThe following Commands are used to tell SparkCSS which Utility Classes to Generate\n");
+  console.log("--typography | This generate all typography-based Utility Classes\n");
+  console.log("--display | This generate all display-based Utility Classes\n");
+  console.log("--colors | This generate all colors-based Utility Classes\n");
+  console.log("--transform | This generate all transform-based Utility Classes\n");
+  console.log("--spacing | This generate all spacing-based Utility Classes\n");
+  console.log("--box-model | This generate all box-model-based Utility Classes\n");
+  console.log("--all | This generate every Utility Classe SparkCSS has\n");
+  console.log("--output <path> | This tell SparkCSS where to store the generated CSS file. If no output path is specifed, SparkCSS will generate the output file in the same directory this command is executed, titled 'output.css'\n");
+  console.log("For more information about indiviaul Utility classes, refer to the docs\n GitHub: https://github.com/Simpleboi/sparkcss \nhttps://www.npmjs.com/package/sparkcss");
+};
+
 
 // Save the generated CSS to the specified output path
 const outputPath = path.resolve(process.cwd(), options.output);
 
 writeFileSync(outputPath, cssOutput, "utf-8");
-console.log(`CSS file has been generated and saved to: ${outputPath}`);
+console.log(`\nCSS file has been generated and saved to: ${outputPath}`);

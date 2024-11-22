@@ -58,5 +58,41 @@ export function generateDisplay(config: any): string {
     cssOutput += "\n";
   }
 
+  // Generate the display Flex Property
+  if (display && display.flex.flexShrink) {
+    cssOutput += "/* Flex Displau Utility Classes*/\n";
+    for (const [key, value] of Object.entries(display.flex.display)) {
+      cssOutput += `.flex${key} { display : ${value};} \n`;
+    }
+    cssOutput += "\n";
+  }
+
+  // Generate Grid Column Properties
+  if (display && display.grid.columns) {
+    cssOutput += "/* Grid Column Utility Classes*/\n";
+    for (const [key, value] of Object.entries(display.grid.columns)) {
+      cssOutput += `.col-${key} { grid-template-columns : ${value};} \n`;
+    }
+    cssOutput += "\n";
+  }
+
+  // Generate Grid Row Properties
+  if (display && display.grid.row) {
+    cssOutput += "/* Grid Row Utility Classes*/\n";
+    for (const [key, value] of Object.entries(display.grid.row)) {
+      cssOutput += `.row-${key} { grid-template-rows : ${value};} \n`;
+    }
+    cssOutput += "\n";
+  }
+
+  // Generate Grid Display
+  if (display && display.grid.display) {
+    cssOutput += "/* Grid Column Utility Classes*/\n";
+    for (const [key, value] of Object.entries(display.grid.display)) {
+      cssOutput += `.grid { display : ${value};} \n`;
+    }
+    cssOutput += "\n";
+  }
+
   return cssOutput;
 }

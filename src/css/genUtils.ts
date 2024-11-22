@@ -4,6 +4,7 @@ import { generateSpacing } from "./cssGenerators/genSpacing";
 import { generateBoxModel } from "./cssGenerators/genBoxmodel";
 import { generateColors } from "./cssGenerators/genColors";
 import { generateDisplay } from "./cssGenerators/genDisplay";
+import { generateTransform } from "./cssGenerators/genTransform";
 
 function generateUtilities() {
   try {
@@ -29,6 +30,10 @@ function generateUtilities() {
     }
     if (config.utilities.display) {
       cssOutput += generateDisplay(config);
+    }
+
+    if (config.utilities.transform) {
+      cssOutput += generateTransform(config);
     }
 
     // Write the generated CSS to a file
