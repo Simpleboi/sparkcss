@@ -5,14 +5,8 @@ import { TokenType } from "./tokens";
 // Sample Input to test the lexer
 const sampleInput = `
 
-@snippet: flexBoxCenter() {
-  padding: 10px;
-  margin: 20px;
-};
-
 .my-class {
   padding: 10px;
-  @apply: flexBoxCenter();
 };
 
 `;

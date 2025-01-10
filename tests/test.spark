@@ -1,11 +1,6 @@
 
 
-@snippet: Haley() {
-    padding: 10px;
-    margin: 10px;
-};
 
 .my-class {
-    @apply: Haley();
-    border-radius: 30px;
+    padding: 1rem;
 };

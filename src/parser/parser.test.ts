@@ -4,23 +4,10 @@ import { parse } from "./parser";
 
 const sampleInput = `
 
-@snippet: flexBoxCenter() {
-  padding: 20px;
-  margin: 10px;
-  border-radius: 10px;
-};
-
-.my-class {
-  @apply: flexBoxCenter();
-}
-
 .second-class {
   padding: 10px;
-}
-
-.another-class {
-  padding: 10px;
 };
+
 
 `;
 
