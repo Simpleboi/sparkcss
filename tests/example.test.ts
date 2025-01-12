@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import { lexer } from '../src/lexer/lexer';
 import { parse } from '../src/parser/parser';
 import { generateCSS } from '../src/codegen/generator';
+import { TokenType } from '../src/lexer/tokens';
 
 // File path to the .spark file
 const filePath = './test.spark';
@@ -16,8 +17,14 @@ fs.readFile(filePath, 'utf8', (err, data) => {
   try {
     // Tokenize the content
     const tokens = lexer(data);
-    console.log('Tokens:', tokens);
-
+    tokens.forEach((token) => {
+      console.log({
+        type: TokenType[token.type],
+        value: token.value,
+        position: token.position,
+      });
+    });
+    
     // Parse the tokens into an AST
     const ast = parse(tokens);
     console.log('AST:', JSON.stringify(ast, null, 2));

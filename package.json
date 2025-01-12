@@ -35,6 +35,7 @@
   },
   "dependencies": {
     "commander": "^12.1.0",
-    "mdn-data": "^2.12.2"
+    "css-tree": "^3.1.0",
+    "mdn-data": "^2.14.0"
   }
 }

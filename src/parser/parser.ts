@@ -25,10 +25,6 @@ export function parse(inputTokens: Token[]): Stylesheet {
 
     const token = current();
 
-    console.log(
-      `Processing token: { type: ${token.type}, value: ${token.value}, position: ${token.position} }`
-    );
-
     if (token.type === TokenType.Variable) {
       // Parse the variable
       parseVariable();

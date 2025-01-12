@@ -1,5 +1,3 @@
-// parseVariable.ts
-// parseVariable.ts
 import { TokenType } from "../../lexer/tokens";
 import { current, next } from "../../lexer/lexerHelpers/lexerUtils";
 
@@ -20,7 +18,7 @@ export function parseVariable(): void {
 
   // Expect a colon `:` after the variable name
   const colonToken = current();
-  if (colonToken.type !== TokenType.Symbol || colonToken.value !== ":") {
+  if (colonToken.type !== TokenType.Colon || colonToken.value !== ":") {
     throw new Error(
       `Expected ':' after variable name at position ${colonToken.position}`
     );
@@ -48,7 +46,7 @@ export function parseVariable(): void {
 
   // Expect a semicolon `;` at the end of the declaration
   const semicolonToken = current();
-  if (semicolonToken.type !== TokenType.Symbol || semicolonToken.value !== ";") {
+  if (semicolonToken.type !== TokenType.Semicolon || semicolonToken.value !== ";") {
     throw new Error(
       `Expected ';' at the end of variable declaration at position ${semicolonToken.position}`
     );

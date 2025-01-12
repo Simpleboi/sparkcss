@@ -6,8 +6,13 @@ import {
   getPosition,
   getInput,
   skipWhitespace,
+  current,
 } from "./lexerUtils";
 import { readIdentifier } from "./readIdentifier";
+import cssPropertiesData from "mdn-data/css/properties.json"
+// @ts-ignore
+import { parseCssValue } from 'css-tree';
+
 
 export function readDirective() {
   // Start by advancing after the '@' symbol
@@ -100,33 +105,58 @@ function readSnippet() {
     const char = peek();
 
     if (/[a-zA-Z]/.test(char)) {
-      // This could be either a property name or a value
-      const identifier = readIdentifier();
-      addToken(TokenType.Property, identifier);
-    } else if (/\d/.test(char)) {
-      // Handle numbers and units like '10px'
+      const property = readIdentifier();
+
+      const propertyDetails =
+        cssPropertiesData[property as keyof typeof cssPropertiesData];
+      if (!propertyDetails) {
+        throw new Error(
+          `Unknown CSS property '${property}' at position ${getPosition()}`
+        );
+      }
+
+      addToken(TokenType.Property, property);
+
+      skipWhitespace();
+
+      if (peek() === ":") {
+        addToken(TokenType.Colon, advance());
+      } else {
+        throw new Error(
+          `Expected ':' after property '${property}' at position ${getPosition()}`
+        );
+      }
+
+      skipWhitespace();
+
       let value = "";
-
-      // Capture the numeric part
-      while (/\d/.test(peek()) || peek() === ".") {
+      while (/[^\s;]/.test(peek()) && peek() !== undefined) {
         value += advance();
       }
 
-      // Capture the unit part, if present (e.g., 'px', 'rem')
-      while (/[a-zA-Z]/.test(peek())) {
-        value += advance();
+      if (!validateCssValue(property, value)) {
+        throw new Error(
+          `Invalid value '${value}' for property '${property}' at position ${getPosition()}`
+        );
       }
 
-      addToken(TokenType.Unit, value);
-    } else if (char === ":") {
-      addToken(TokenType.Colon, advance());
-    } else if (char === ";") {
-      addToken(TokenType.Semicolon, advance());
+      addToken(TokenType.Value, value);
+
+      skipWhitespace();
+
+      if (peek() === ";") {
+        addToken(TokenType.Semicolon, advance());
+      } else {
+        throw new Error(
+          `Expected ';' after value '${value}' at position ${getPosition()}`
+        );
+      }
     } else {
       throw new Error(
         `Unexpected character in snippet body at position ${getPosition()}`
       );
     }
+
     skipWhitespace();
   }
 
@@ -195,5 +225,21 @@ function readApply() {
     addToken(TokenType.Semicolon, advance());
   } else {
     throw new Error(`Expected ';' at position ${getPosition()}`);
+  }
+}
+
+function validateCssValue(property: string, value: string): boolean {
+  const propertyDetails =
+    cssPropertiesData[property as keyof typeof cssPropertiesData];
+
+  if (!propertyDetails) return false;
+
+  const syntax = propertyDetails.syntax;
+
+  try {
+    parseCssValue(value, { property, syntax });
+    return true;
+  } catch (err) {
+    return false;
   }
 }

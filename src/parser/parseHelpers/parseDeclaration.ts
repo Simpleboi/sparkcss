@@ -6,7 +6,6 @@ import { getVariableValue } from "./parseVariable";
 import cssPropertiesData from "mdn-data/css/properties.json"; 
 
 export function parseDeclaration(): Declaration {
-  console.log("Starting parseDeclaration at position", current().position);
 
   const propertyToken = current();
 
@@ -72,8 +71,6 @@ export function parseDeclaration(): Declaration {
     );
   }
   next(); 
-
-  console.log(`Successfully parsed declaration for property '${propertyName}'`);
 
   return {
     type: "Declaration",
