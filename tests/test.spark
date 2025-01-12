@@ -1,6 +1,9 @@
 
+$card-brd: 20px;
 
 
 .my-class {
     padding: 1rem;
+    margin: 2rem;
+    @apply: flexCenter();
 };

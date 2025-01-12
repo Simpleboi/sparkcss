@@ -89,16 +89,16 @@ SparkCSS provides utility classes that are very flexible. Utility classes can be
 
 ## Using SparkCSS in Your Project
 
-1. **Compile SparkCSS to CSS**: Use the command line to convert your SparkCSS code into standard CSS. To do this, use the **sparkup** command:
+1. **Compile SparkCSS to CSS**: Use the command line to convert your SparkCSS code into standard CSS. To do this, use the **sparky** command:
 
   ```bash
-  sparkup <input.spark> <output.css>
+  sparky <input.spark> <output.css>
   ```
 
 if you don't specify an output file and path for css, Spark will create one for you using the same name as the input.spark file and the output file will be in the same directory as the input: 
 
    ```bash
-   sparkup <input.spark>
+   sparky <input.spark>
    ```
 
 This will do the same thing as above. 
