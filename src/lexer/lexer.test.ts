@@ -5,13 +5,7 @@ import { TokenType } from "./tokens";
 // Sample Input to test the lexer
 const sampleInput = `
 
-@snippet: flexCenter() {
-  display: flex;
-}
-
-.my-class {
-  @apply: flexCenter();
-}
+@array: MakeShiftArrays [21, 23, 24];
 
 `;
 

@@ -1,9 +1,8 @@
-
-
-@snippet: flexCenter() {
-    margin: 10px;
-};
+$padding-maps: [ "something", "something",
+  "another thing"] @snippet: flexCenter() {
+  margin: 10px;
+}
 
 .my-class {
-    @apply: flexCenter();
-};
+  @apply: flexCenter();
+}

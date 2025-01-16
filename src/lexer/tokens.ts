@@ -25,6 +25,9 @@ export enum TokenType {
   Semicolon,        // Represents ';'
   Comma,            // Represents ','
   Parameters,
+  BracketStart, // Represents '['
+  BracketEnd,   // Represents ']'
+  ArrayValue,   // Represnts '[hello]'
   EOF,
 }
 

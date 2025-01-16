@@ -1,3 +1,4 @@
+// @ts-ignore
 import { TokenType } from "../tokens";
 import {
   addToken,
@@ -6,12 +7,11 @@ import {
   getPosition,
   getInput,
   skipWhitespace,
-  current,
 } from "./lexerUtils";
 import { readIdentifier } from "./readIdentifier";
 import cssPropertiesData from "mdn-data/css/properties.json"
-// @ts-ignore
-import { parseCssValue } from 'css-tree';
+// import { parseCssValue } from 'css-tree';
+import { readArray } from "./readArray";
 
 
 export function readDirective() {
@@ -34,7 +34,12 @@ export function readDirective() {
   } else if (keyword === "apply") {
     addToken(TokenType.DirectiveKeyword, keyword);
     readApply();
-  } else {
+  }
+  else if (keyword === "array") { // New directive
+    addToken(TokenType.DirectiveKeyword, keyword);
+    readArray();
+  }
+  else {
     throw new Error(
       `Unknown directive keyword '${keyword}' at position ${getPosition()}`
     );
@@ -134,11 +139,11 @@ function readSnippet() {
         value += advance();
       }
 
-      if (!validateCssValue(property, value)) {
-        throw new Error(
-          `Invalid value '${value}' for property '${property}' at position ${getPosition()}`
-        );
-      }
+      // if (!validateCssValue(property, value)) {
+      //   throw new Error(
+      //     `Invalid value '${value}' for property '${property}' at position ${getPosition()}`
+      //   );
+      // }
 
       addToken(TokenType.Value, value);
 
@@ -228,20 +233,20 @@ function readApply() {
   }
 }
 
-function validateCssValue(property: string, value: string): boolean {
-  const propertyDetails =
-    cssPropertiesData[property as keyof typeof cssPropertiesData];
+// function validateCssValue(property: string, value: string): boolean {
+//   const propertyDetails =
+//     cssPropertiesData[property as keyof typeof cssPropertiesData];
 
-  if (!propertyDetails) return false;
+//   if (!propertyDetails) return false;
 
-  const syntax = propertyDetails.syntax;
+//   const syntax = propertyDetails.syntax;
 
-  try {
-    parseCssValue(value, { property, syntax });
-    return true;
-  } catch (err) {
-    return false;
-  }
-}
+//   try {
+//     parseCssValue(value, { property, syntax });
+//     return true;
+//   } catch (err) {
+//     return false;
+//   }
+// }
 
 // this is for daily commit purposes
