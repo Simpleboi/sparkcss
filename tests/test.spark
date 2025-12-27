@@ -1,8 +1,17 @@
-$padding-maps: [ "something", "something",
-  "another thing"] @snippet: flexCenter() {
-  margin: 10px;
-}
+
+
+
+@snippet: example() {
+  padding: 2rem;
+  margin: 28rem;
+};
+
+$variables: 10px;
 
 .my-class {
-  @apply: flexCenter();
-}
+  @apply: example();
+};
+
+.another-class {
+  @apply: example();
+};

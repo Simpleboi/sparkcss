@@ -9,6 +9,7 @@ import {
 import { readIdentifier } from "./readIdentifier";
 import { TokenType } from "../tokens";
 
+
 export function readArray() {
   skipWhitespace();
 

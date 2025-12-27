@@ -65,7 +65,6 @@ export function lexer(input: string): Token[] {
       );
     }
   }
-
   // Add an EOF token at the end of the input
   addToken(TokenType.EOF, "");
   return _tokens;
